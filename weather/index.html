@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Weather API</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous" />
+    <style>
+        .content {
+            background-color: rgb(78, 123, 192);
+        }
+    </style>
+</head>
+
+<body>
+    <input type="text" id="search" placeholder="Search...">
+    <div id="content">
+
+        <div class="content shadow-lg p-3 my-5 text-white rounded w-25
+            text-center mx-auto">
+        </div>
+
+        <script>
+            document.getElementById("search").addEventListener("input", search);
+
+            function search(e) {
+                e.preventDefault();
+                let xhttp = new XMLHttpRequest();
+                let searchVal = document.getElementById("search").value;
+                xhttp.open("GET", "https://api.openweathermap.org/data/2.5/weather?q=" + searchVal + "&units=metric&appid=bc265327cbf9b8d63fd20ccde5056b17");
+
+
+                xhttp.onload = function() {
+                    if (this.status == 200) {
+                        let weatherArray = JSON.parse(this.responseText);
+                        console.log(weatherArray);
+                        document.querySelector(".content").innerHTML = `
+                    <h1 class="cityName">${searchVal}</h1>  
+                    <h3 class="country">${weatherArray.sys.country}</h3>  
+
+                    <img src="+${weatherArray.weather[0].main.icon}+".png" alt="" width="100%">
+
+            
+              <p class="temp fs-3">Temperature: ${weatherArray.main.temp}°C</p>
+               <p class="status fs-2">${weatherArray.weather[0].main}</p>   
+               <p class="status fs-2">Wind Speed: ${weatherArray.wind.speed}</p>               
+                `
+                    }
+                };
+
+                xhttp.send();
+            }
+        </script>
+
+
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
+</body>
+
+</html>

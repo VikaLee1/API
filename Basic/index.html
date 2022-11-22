@@ -8,19 +8,41 @@
     <title>Serri's Jokes</title>
     <!-- bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    <style>
+        .card {
+            animation-name: spin;
+            animation-duration: 0.5s;
+            animation-iteration-count: 1;
+            animation-timing-function: linear;
+            /* transform: rotate(3deg); */
+            /* transform: rotate(0.3rad);/ */
+            /* transform: rotate(3grad); */
+            /* transform: rotate(.03turn);  */
+        }
+        
+        @keyframes spin {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
 </head>
 
 <body>
 
     <div class="container">
-        <h2>Click to get the joke of the day</h2>
-        <form action="">
+        <h2 class="text-center">Get a joke from Serri</h2>
+        <form class="text-center" action="">
             <input id="loadFile" type="submit" value="Load the joke" name='Submit' class="btn btn-success">
         </form>
         <hr>
-        <div class="row content"></div>
+        <div class="row content text-center"></div>
     </div>
     <script>
+        // variant 1- show a new data after clicking 
         let btnLoad = document.getElementById('loadFile');
         btnLoad.addEventListener('click', loadAPI);
 
@@ -31,14 +53,13 @@
             xhttp.onload = function() {
                 if (this.status == 200) {
                     let result = JSON.parse(this.responseText);
-
+                    // if I have only =
                     document.querySelector(".content").innerHTML = `<div class="card" style="width: 18rem;">
             <img src="joke.png" class="card-img-top" alt="...">
             <div class="card-body">
             <h5 class="card-title">${result.joke}</h5>
             </div>
             </div> `
-
                     console.log(result[0].name)
                 }
             };
@@ -46,8 +67,7 @@
             xhttp.send();
         }
 
-
-
+        //  variant 2 - to show one random data
         function showJoke() {
             let builtUrl = `http://api.serri.codefactory.live/random/`;
             const xml = new XMLHttpRequest();
